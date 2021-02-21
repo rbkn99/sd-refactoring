@@ -1,4 +1,4 @@
-package ru.akirakozov.sd.refactoring.servlet;
+package ru.rbkn99.sd.refactoring.servlet;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 /**
- * @author akirakozov
+ * @author rbkn99
  */
 public class GetProductsServlet extends HttpServlet {
 
