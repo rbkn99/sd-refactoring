@@ -1,9 +1,10 @@
 package ru.rbkn99.sd.refactoring.servlet;
 
 import org.junit.Test;
+import ru.rbkn99.sd.refactoring.product.Product;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -21,14 +22,13 @@ public class QueryServletTest extends BaseServletTest {
     }
 
     @Test
-    public void badCommandTest() throws IOException {
+    public void unknownCommandTest() throws IOException {
         testCommand("blablabla", "Unknown command: blablabla");
     }
 
     private void maxTest(String result) throws IOException {
-        testCommand("max", "<html><body>" + sep +
-                "<h1>Product with max price: </h1>" + sep +
-                result +
+        testCommand("max", "<html><body>\n" +
+                "<h1>Product with max price: </h1>\n" + result +
                 "</body></html>");
     }
 
@@ -37,16 +37,21 @@ public class QueryServletTest extends BaseServletTest {
         maxTest("");
     }
 
+    private void simpleInsert() {
+        database.insert(List.of(
+                new Product("cheese", 150),
+                new Product("milk", 80)));
+    }
+
     @Test
-    public void simpleMaxTest() throws SQLException, IOException {
-        execSql("INSERT INTO " + TEST_TABLE_NAME + " (NAME, PRICE) VALUES ('iphone', 111), ('samsung', 95)");
-        maxTest("iphone\t111</br>" + sep);
+    public void simpleMaxTest() throws IOException {
+        simpleInsert();
+        maxTest("cheese\t150</br>\n");
     }
 
     private void minTest(String result) throws IOException {
-        testCommand("min", "<html><body>" + sep +
-                "<h1>Product with min price: </h1>" + sep +
-                result +
+        testCommand("min", "<html><body>\n" +
+                "<h1>Product with min price: </h1>\n" + result +
                 "</body></html>");
     }
 
@@ -56,44 +61,42 @@ public class QueryServletTest extends BaseServletTest {
     }
 
     @Test
-    public void simpleMinTest() throws SQLException, IOException {
-        execSql("INSERT INTO " + TEST_TABLE_NAME + " (NAME, PRICE) VALUES ('iphone', 111), ('samsung', 95)");
-        minTest("samsung\t95</br>" + sep);
+    public void simpleMinTest() throws IOException {
+        simpleInsert();
+        minTest("milk\t80</br>\n");
     }
 
     private void sumTest(String result) throws IOException {
-        testCommand("sum", "<html><body>" + sep +
-                "Summary price: " + sep +
-                result +
+        testCommand("sum", "<html><body>\n" +
+                "Summary price: \n" + result +
                 "</body></html>");
     }
 
     @Test
     public void emptySumTest() throws IOException {
-        sumTest("0" + sep);
+        sumTest("0\n");
     }
 
     @Test
-    public void simpleSumTest() throws IOException, SQLException {
-        execSql("INSERT INTO " + TEST_TABLE_NAME + " (NAME, PRICE) VALUES ('iphone', 111), ('samsung', 95)");
-        sumTest("206" + sep);
+    public void simpleSumTest() throws IOException {
+        simpleInsert();
+        sumTest("230\n");
     }
 
     private void countTest(String result) throws IOException {
-        testCommand("count", "<html><body>" + sep +
-                "Number of products: " + sep +
-                result +
+        testCommand("count", "<html><body>\n" +
+                "Number of products: \n" + result +
                 "</body></html>");
     }
 
     @Test
     public void emptyCountTest() throws IOException {
-        countTest("0" + sep);
+        countTest("0\n");
     }
 
     @Test
-    public void simpleCountTest() throws IOException, SQLException {
-        execSql("INSERT INTO " + TEST_TABLE_NAME + " (NAME, PRICE) VALUES ('iphone', 111), ('samsung', 95)");
-        countTest("2" + sep);
+    public void simpleCountTest() throws IOException {
+        simpleInsert();
+        countTest("2\n");
     }
 }
