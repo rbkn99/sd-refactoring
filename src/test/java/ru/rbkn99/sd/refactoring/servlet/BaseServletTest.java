@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import ru.rbkn99.sd.refactoring.db.BaseDatabase;
+import ru.rbkn99.sd.refactoring.db.ProductDatabase;
+import ru.rbkn99.sd.refactoring.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,11 +22,13 @@ import java.sql.Statement;
 import static org.mockito.Mockito.when;
 
 public class BaseServletTest {
-    private static final String TEST_DATABASE_NAME = "jdbc:sqlite:test.db";
     protected static final String TEST_TABLE_NAME = "PRODUCT";
-    protected static final String sep = System.lineSeparator();
+    private static final String TEST_DATABASE_NAME = "jdbc:sqlite:test.db";
 
+    protected static final String sep = "\n";
     protected final StringWriter writer = new StringWriter();
+
+    protected final BaseDatabase<Product> database = new ProductDatabase(TEST_DATABASE_NAME);
 
     @Mock
     protected HttpServletRequest request;

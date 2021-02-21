@@ -1,11 +1,10 @@
 package ru.rbkn99.sd.refactoring.product;
 
 public class Product {
-    private final String name;
-    private final long price;
-
     private static final String SQL_TEMPLATE = "('%s', %d)";
     private static final String HTML_TEMPLATE = "%s\t%d</br>";
+    private final String name;
+    private final long price;
 
     public Product(String name, long price) {
         this.name = name;

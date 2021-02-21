@@ -12,7 +12,7 @@ public class AddProductServletTest extends BaseServletTest {
     public void notEmptyTest() throws IOException {
         when(request.getParameter("name")).thenReturn("my_name");
         when(request.getParameter("price")).thenReturn("23");
-        new AddProductServlet().doGet(request, response);
+        new AddProductServlet(database).doGet(request, response);
         compareStrings("OK", writer.toString());
     }
 }

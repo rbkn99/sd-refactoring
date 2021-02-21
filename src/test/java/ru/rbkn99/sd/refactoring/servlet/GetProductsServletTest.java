@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class GetProductsServletTest extends BaseServletTest {
     @Test
     public void emptyGetTest() throws IOException {
-        new GetProductsServlet().doGet(request, response);
+        new GetProductsServlet(database).doGet(request, response);
         compareStrings("<html><body>" + sep +
                 "</body></html>", writer.toString());
     }
@@ -17,7 +17,7 @@ public class GetProductsServletTest extends BaseServletTest {
     public void notEmptyGetTest() throws SQLException, IOException {
         execSql("INSERT INTO " + BaseServletTest.TEST_TABLE_NAME + "(NAME, PRICE) VALUES " +
                 "('product1', 1), ('product2', 2)");
-        new GetProductsServlet().doGet(request, response);
+        new GetProductsServlet(database).doGet(request, response);
         compareStrings("<html><body>" + sep +
                 "product1\t1</br>" + sep +
                 "product2\t2</br>" + sep +

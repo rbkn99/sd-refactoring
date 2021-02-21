@@ -2,8 +2,9 @@ package ru.rbkn99.sd.refactoring.db;
 
 import ru.rbkn99.sd.refactoring.product.Product;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProductDatabase extends BaseDatabase<Product> {
 
@@ -22,7 +23,7 @@ public class ProductDatabase extends BaseDatabase<Product> {
 
     @Override
     public void dropIfExists() {
-        execSql("DROP IF EXISTS " + TABLE_NAME);
+        execSql("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
     @Override
@@ -42,10 +43,35 @@ public class ProductDatabase extends BaseDatabase<Product> {
     }
 
     @Override
-    public List<Product> selectAll() {
+    public Stream<Product> selectAll() {
         return selectSql("SELECT NAME, PRICE FROM " + TABLE_NAME, List.of("NAME", "PRICE"))
                 .stream()
-                .map(this::parseProduct)
-                .collect(Collectors.toList());
+                .map(this::parseProduct);
+    }
+
+    @Override
+    public Product maxPrice() {
+        return selectAll()
+                .max(Comparator.comparing(Product::getPrice))
+                .orElse(null);
+    }
+
+    @Override
+    public Product minPrice() {
+        return selectAll()
+                .min(Comparator.comparing(Product::getPrice))
+                .orElse(null);
+    }
+
+    @Override
+    public long sumPrice() {
+        return selectAll()
+                .mapToLong(Product::getPrice)
+                .sum();
+    }
+
+    @Override
+    public long count() {
+        return selectAll().count();
     }
 }

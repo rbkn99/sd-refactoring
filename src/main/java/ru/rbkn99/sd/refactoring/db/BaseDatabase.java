@@ -5,6 +5,7 @@ import ru.rbkn99.sd.refactoring.product.Product;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public abstract class BaseDatabase<T> {
     private final String databaseConnection;
@@ -23,7 +24,7 @@ public abstract class BaseDatabase<T> {
 
     public abstract int insert(List<T> objects);
 
-    public abstract List<Product> selectAll();
+    public abstract Stream<Product> selectAll();
 
     public String getDatabaseConnection() {
         return databaseConnection;
@@ -58,4 +59,12 @@ public abstract class BaseDatabase<T> {
         }
         return table;
     }
+
+    public abstract Product maxPrice();
+
+    public abstract Product minPrice();
+
+    public abstract long sumPrice();
+
+    public abstract long count();
 }

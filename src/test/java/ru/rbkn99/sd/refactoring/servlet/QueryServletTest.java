@@ -10,13 +10,13 @@ import static org.mockito.Mockito.when;
 public class QueryServletTest extends BaseServletTest {
     private void testCommand(String command, String result) throws IOException {
         when(request.getParameter("command")).thenReturn(command);
-        new QueryServlet().doGet(request, response);
+        new QueryServlet(database).doGet(request, response);
         compareStrings(writer.toString(), result);
     }
 
     @Test
     public void nullCommandTest() throws IOException {
-        new QueryServlet().doGet(request, response);
+        new QueryServlet(database).doGet(request, response);
         compareStrings(writer.toString(), "Unknown command: null");
     }
 

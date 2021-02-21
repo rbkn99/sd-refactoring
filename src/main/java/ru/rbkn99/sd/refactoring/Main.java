@@ -3,12 +3,12 @@ package ru.rbkn99.sd.refactoring;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.rbkn99.sd.refactoring.servlet.AddProductServlet;
-import ru.rbkn99.sd.refactoring.servlet.GetProductsServlet;
-import ru.rbkn99.sd.refactoring.servlet.QueryServlet;
 import ru.rbkn99.sd.refactoring.db.BaseDatabase;
 import ru.rbkn99.sd.refactoring.db.ProductDatabase;
 import ru.rbkn99.sd.refactoring.product.Product;
+import ru.rbkn99.sd.refactoring.servlet.AddProductServlet;
+import ru.rbkn99.sd.refactoring.servlet.GetProductsServlet;
+import ru.rbkn99.sd.refactoring.servlet.QueryServlet;
 
 
 /**
@@ -25,9 +25,9 @@ public class Main {
         context.setContextPath("/");
         server.setHandler(context);
 
-        context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
-        context.addServlet(new ServletHolder(new GetProductsServlet()), "/get-products");
-        context.addServlet(new ServletHolder(new QueryServlet()), "/query");
+        context.addServlet(new ServletHolder(new AddProductServlet(database)), "/add-product");
+        context.addServlet(new ServletHolder(new GetProductsServlet(database)), "/get-products");
+        context.addServlet(new ServletHolder(new QueryServlet(database)), "/query");
 
         server.start();
         server.join();
